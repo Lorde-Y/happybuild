@@ -1,0 +1,84 @@
+.proxy-resize {
+	&.active {
+		display: block;
+	}
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	outline: none;
+	cursor: move;
+	background-image: 
+					linear-gradient(0deg, #838587 50%, white 50%),
+					linear-gradient(90deg, #838587 50%, white 50%),
+					linear-gradient(0deg, #838587 50%, white 50%),
+					linear-gradient(90deg, #838587 50%, white 50%);
+	background-position: 0 0, 0 0, 100% 0, 100% 100%;
+	background-size: 1px 6px, 6px 1px, 1px 6px, 6px 1px;
+	background-repeat: repeat-y, repeat-x, repeat-y, repeat-x;
+	.handle-resize {
+		position: absolute;
+		// top: 0;
+		// left: 0;
+		width: 6px;
+		height: 6px;
+		margin-top: -3px;
+		margin-left: -3px;
+		// border-radius: 50%;
+		// background: #fff;
+	}
+	.origin-nw {
+		top: 2px;
+		left: 1px;
+		border-left: 2px solid #fff;
+		border-top: 2px solid #fff;
+		cursor: nw-resize;
+	}
+	.origin-n {
+		top: 2px;
+		left: 50%;
+		border-top: 2px solid #fff;
+		cursor: n-resize;
+	}
+	.origin-ne {
+		right: -1px;
+		top: 2px;
+		border-right: 2px solid #fff;
+		border-top: 2px solid #fff;
+		cursor: ne-resize;
+	}
+	.origin-e {
+		top: 50%;
+		right: -1px;
+		border-right: 2px solid #fff;
+		cursor: e-resize;
+	}
+	.origin-se {
+		right: -1px;
+		bottom: -1px;
+		border-right: 2px solid #fff;
+		border-bottom: 2px solid #fff;
+		cursor: se-resize;
+	}
+	.origin-s {
+		bottom: -1px;
+		border-bottom: 2px solid #fff;
+		left: 50%;
+		cursor: s-resize;
+	}
+	.origin-sw {
+		left: 1px;
+		bottom: -1px;
+		border-left: 2px solid #fff;
+		border-bottom: 2px solid #fff;
+		cursor: sw-resize;
+	}
+	.origin-w {
+		top: 50%;
+		left: 1px;
+		border-left: 2px solid #fff;
+		cursor: w-resize;
+	}
+}

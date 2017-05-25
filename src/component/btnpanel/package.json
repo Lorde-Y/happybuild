@@ -1,0 +1,6 @@
+{
+	"name": "btnpanel",
+	"version": "0.0.0",
+	"private": true,
+	"main": "./btnpanel.jsx"
+}

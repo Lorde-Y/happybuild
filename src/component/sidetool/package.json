@@ -1,0 +1,6 @@
+{
+	"name": "sidetool",
+	"version": "0.0.0",
+	"private": true,
+	"main": "./sidetool.jsx"
+}
