@@ -1,3 +1,14 @@
-# happybuild
-Use webpack to build React
-https://segmentfault.com/a/1190000005614604?utm_source=tuicool&utm_medium=referral
+### 编译合并第三方库
+npm run dll
+
+### 编译合并第三方库(生产环境)
+npm run dll --release
+
+### 打包编译静态资源
+npm run bundle
+
+### 打包编译静态资源(生产环境)
+npm run bundle --release
+
+### 启动项目
+npm start

@@ -18,7 +18,7 @@ const options = {
 
 
 async function deploy() {
-    await makeDir('build');
+    // await makeDir('build');
     await spawn('git', ['init'], options);
 
     // Build the project in RELEASE mode
@@ -32,7 +32,7 @@ async function deploy() {
     await run(require('./bundle').default); // eslint-disable-line global-require
     await spawn('git', ['add', '.'], options);
     await spawn('git', ['commit', '-m', `${commitMsg}`], options);
-    await spawn('git', ['push', 'origin', 'master']);
+    await spawn('git', ['push', 'origin', 'test']);
 }
 
 export default deploy;

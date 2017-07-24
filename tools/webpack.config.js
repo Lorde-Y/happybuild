@@ -8,6 +8,12 @@ const DEBUG = ISRELEASED === -1;
 
 const srcPath = path.resolve(__dirname, '../src');
 
+const isMin = DEBUG ? '' : '.min';
+
+let dllConfig = null;
+let dllConfigUrl = DEBUG ? '../dist/vender/dll-config.json' : '../dist/vender/dll-config.min.json';
+dllConfig = require(path.resolve(__dirname, dllConfigUrl));
+
 // http://caniuse.com/  可以查询在中国使用的浏览器类型及版本
 const BROWSER_AUTOPREFIXER = [
     'Android >= 4',
@@ -36,9 +42,9 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, '../dist'),
-        filename: DEBUG ? '[name].js?_=[hash]' : '[name].[hash].js',
+        filename: DEBUG ? '[name].js?_=[hash]' : 'js/[name].[hash].js',
         chunkFilename: '[name].js?[hash]-[chunkhash]',
-        publicPath: DEBUG ? '' : 'http://cdn.com',
+        publicPath: DEBUG ? '' : '/',
     },
     module: {
         rules: [
@@ -79,6 +85,24 @@ module.exports = {
                     srcPath,
                 ],
             },
+            // {
+            //     test: /\.svg$/,
+            //     loader: 'svg-inline-loader?classPrefix'
+            // },
+            {
+                test: /\.(png|jpg|jpeg)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 8192,
+                        name: 'images/[hash:8].[name].[ext]'
+                    }
+                }]
+            },
+            {
+                test: /\.(eot|ttf|woff|svg|wav|mp3)$/,
+                use: "file-loader?name=[name].[ext]",
+            },
         ],
     },
     // https://github.com/webpack/webpack/issues/3486
@@ -105,6 +129,7 @@ module.exports = {
         // https://github.com/cssmagic/blog/issues/58 Loader options & minimize
         new webpack.LoaderOptionsPlugin({
             minimize: !DEBUG,
+            debug: DEBUG,
             options: {
                 // https://github.com/postcss/postcss-loader/issues/128
                 postcss: [
@@ -115,37 +140,51 @@ module.exports = {
                 ],
             },
         }),
+        
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
+            'process.env': {
+                NODE_ENV: DEBUG ? JSON.stringify('development') : JSON.stringify('production'),
+            }
         }),
+
         new HtmlWebpackPlugin({
             title: 'My App',
-            filename: 'create.html',
+            filename: 'index.html',
             template: 'src/content/index.html',
             minify: DEBUG ? false : {
                 removeComments: true,
                 collapseWhitespace: true,
             },
-            dllName: '/vender/library.min.js',
+            dllName: 'vender/' + dllConfig.library.js,
             chunks: ['app'],
             cache: DEBUG,
             hash: DEBUG,
         }),
         new webpack.DllReferencePlugin({
             context: '.',
-            manifest: require('../dist/vender/library-mainfest.json'), // eslint-disable-line global-require
+            manifest: require('../dist/vender/library-mainfest'+isMin+'.json'), // eslint-disable-line global-require
         }),
         // only when production
         ...(DEBUG ? [] : [
             new ExtractTextPlugin({
-                filename: '[name].[contenthash].css',
+                filename: 'css/[name].[contenthash].css',
                 disable: false,
                 allChunks: true,
             }),
+
             new webpack.optimize.UglifyJsPlugin({
                 compress: {
-                    warnings: DEBUG,
+                    warnings: false,
                 },
+                beautify: false,
+                mangle: {
+                    screw_ie8: true,
+                    keep_fnames: true,
+                },
+                compress: {
+                    screw_ie8: true,
+                },
+                comments: false,
             }),
         ]),
     ],
